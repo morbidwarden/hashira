@@ -1,14 +1,11 @@
 const fs = require("fs");
 
-// 1. Read JSON
 const raw = fs.readFileSync("data.json", "utf8");
 const data = JSON.parse(raw);
 
-// 2. Extract n and k
 const n = data.keys.n;
-const k = data.keys.k; // m+1, where m = degree of polynomial
+const k = data.keys.k; 
 
-// 3. Collect points (x, y)
 let xs = [];
 let ys = [];
 
@@ -18,7 +15,7 @@ for (let key in data) {
   const x = parseInt(key);
   const base = parseInt(data[key].base);
   const value = data[key].value;
-  const y = parseInt(value, base); // decode
+  const y = parseInt(value, base); 
 
   xs.push(x);
   ys.push(y);
@@ -29,7 +26,6 @@ for (let i = 0; i < xs.length; i++) {
   console.log(`(${xs[i]}, ${ys[i]})`);
 }
 
-// 4. Lagrange interpolation
 function lagrange(xs, ys) {
   const m = xs.length;
   return function (x) {
@@ -49,7 +45,6 @@ function lagrange(xs, ys) {
 
 const P = lagrange(xs, ys);
 
-// 5. Test interpolation at given x values
 console.log("\nCheck interpolation:");
 for (let i = 0; i < xs.length; i++) {
   console.log(`P(${xs[i]}) = ${P(xs[i])} (expected ${ys[i]})`);
